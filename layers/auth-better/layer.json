@@ -1,0 +1,21 @@
+{
+    "name": "@vantol/auth-better",
+    "version": "1.0.0",
+    "description": "Better Auth layer with email/password, social SSO, and database-backed sessions.",
+    "tags": [
+        "auth",
+        "better-auth",
+        "sso",
+        "email",
+        "authentication"
+    ],
+    "dependencies": [
+        "better-auth"
+    ],
+    "repository": "https://github.com/vantol/nuxtlayers-auth-better",
+    "demo": "https://auth-better-demo.nuxtlayers.dev",
+    "author": {
+        "name": "Vantol Bennett",
+        "email": "hello@vantolbennett.com"
+    }
+}

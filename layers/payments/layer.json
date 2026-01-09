@@ -1,0 +1,20 @@
+{
+    "name": "@vantol/payments",
+    "version": "1.0.0",
+    "description": "Stripe payments layer with checkout, subscriptions, customer portal, and webhooks.",
+    "tags": [
+        "payments",
+        "stripe",
+        "subscriptions",
+        "checkout"
+    ],
+    "dependencies": [
+        "stripe"
+    ],
+    "repository": "https://github.com/vantol/nuxtlayers-payments",
+    "demo": "https://payments-demo.nuxtlayers.dev",
+    "author": {
+        "name": "Vantol Bennett",
+        "email": "hello@vantolbennett.com"
+    }
+}

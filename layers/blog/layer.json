@@ -1,0 +1,19 @@
+{
+    "name": "@vantol/blog",
+    "version": "1.0.0",
+    "description": "Full-featured blog layer with real-time comments, reactions, views tracking, bookmarks, and newsletter signup.",
+    "tags": [
+        "blog",
+        "content",
+        "comments",
+        "reactions",
+        "firebase"
+    ],
+    "dependencies": [],
+    "repository": "https://github.com/vantol/nuxtlayers-blog",
+    "demo": "https://blog-demo.nuxtlayers.dev",
+    "author": {
+        "name": "Vantol Bennett",
+        "email": "hello@vantolbennett.com"
+    }
+}

@@ -1,0 +1,25 @@
+{
+    "name": "nuxtlayers",
+    "version": "0.0.1",
+    "private": true,
+    "description": "A marketplace for Nuxt Layers - discover, preview, and install pre-built layers via CLI",
+    "scripts": {
+        "dev": "turbo run dev",
+        "build": "turbo run build",
+        "lint": "turbo run lint",
+        "clean": "turbo run clean && rm -rf node_modules"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.0",
+        "@types/tar": "^6.1.0",
+        "firebase-admin": "^12.0.0",
+        "fs-extra": "^11.0.0",
+        "tar": "^7.0.0",
+        "turbo": "^2.0.0",
+        "typescript": "^5.0.0"
+    },
+    "packageManager": "pnpm@9.0.0",
+    "engines": {
+        "node": ">=20.0.0"
+    }
+}

@@ -1,0 +1,19 @@
+{
+    "name": "@vantol/auth-firebase",
+    "version": "1.0.0",
+    "description": "Firebase authentication layer with Google/GitHub SSO, user state management, and route middleware.",
+    "tags": [
+        "auth",
+        "firebase",
+        "sso",
+        "google",
+        "authentication"
+    ],
+    "dependencies": [],
+    "repository": "https://github.com/vantol/nuxtlayers-auth-firebase",
+    "demo": "https://auth-firebase-demo.nuxtlayers.dev",
+    "author": {
+        "name": "Vantol Bennett",
+        "email": "hello@vantolbennett.com"
+    }
+}

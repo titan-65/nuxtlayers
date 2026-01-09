@@ -1,0 +1,18 @@
+{
+    "name": "@vantol/landing",
+    "version": "1.0.0",
+    "description": "Landing page layer with hero, features, testimonials, pricing, and CTA components.",
+    "tags": [
+        "landing",
+        "marketing",
+        "hero",
+        "saas"
+    ],
+    "dependencies": [],
+    "repository": "https://github.com/vantol/nuxtlayers-landing",
+    "demo": "https://landing-demo.nuxtlayers.dev",
+    "author": {
+        "name": "Vantol Bennett",
+        "email": "hello@vantolbennett.com"
+    }
+}

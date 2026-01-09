@@ -1,0 +1,21 @@
+{
+    "name": "@vantol/auth-clerk",
+    "version": "1.0.0",
+    "description": "Clerk authentication layer with social SSO, user management UI components, and session handling.",
+    "tags": [
+        "auth",
+        "clerk",
+        "sso",
+        "authentication",
+        "user-management"
+    ],
+    "dependencies": [
+        "@clerk/nuxt"
+    ],
+    "repository": "https://github.com/vantol/nuxtlayers-auth-clerk",
+    "demo": "https://auth-clerk-demo.nuxtlayers.dev",
+    "author": {
+        "name": "Vantol Bennett",
+        "email": "hello@vantolbennett.com"
+    }
+}
