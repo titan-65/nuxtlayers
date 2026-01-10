@@ -1,18 +1,44 @@
 /**
- * Payments composable for Stripe integration.
+ * Payments composable for checkout and billing portal.
+ * Uses configured provider endpoints.
  */
 export const usePayments = () => {
-    const config = useRuntimeConfig()
-    const loading = ref(false)
+    const {
+        checkoutEndpoint,
+        portalEndpoint,
+        successUrl,
+        cancelUrl,
+        provider
+    } = usePaymentsConfig()
 
-    const checkout = async (priceId: string, options?: { successUrl?: string; cancelUrl?: string }) => {
+    const loading = ref(false)
+    const error = ref<string | null>(null)
+
+    const checkout = async (priceId: string, options?: {
+        successUrl?: string
+        cancelUrl?: string
+        metadata?: Record<string, string>
+    }) => {
         loading.value = true
+        error.value = null
+
         try {
-            const { url } = await $fetch('/api/payments/checkout', {
+            const response = await $fetch<{ url: string }>(checkoutEndpoint.value, {
                 method: 'POST',
-                body: { priceId, ...options }
+                body: {
+                    priceId,
+                    provider: provider.value,
+                    successUrl: options?.successUrl || successUrl.value,
+                    cancelUrl: options?.cancelUrl || cancelUrl.value,
+                    metadata: options?.metadata
+                }
             })
-            if (url) window.location.href = url
+            if (response?.url) {
+                window.location.href = response.url
+            }
+        } catch (e: any) {
+            error.value = e.message || 'Checkout failed'
+            console.error('Checkout error:', e)
         } finally {
             loading.value = false
         }
@@ -20,16 +46,34 @@ export const usePayments = () => {
 
     const openPortal = async (customerId: string, returnUrl?: string) => {
         loading.value = true
+        error.value = null
+
         try {
-            const { url } = await $fetch('/api/payments/portal', {
+            const response = await $fetch<{ url: string }>(portalEndpoint.value, {
                 method: 'POST',
-                body: { customerId, returnUrl }
+                body: {
+                    customerId,
+                    provider: provider.value,
+                    returnUrl: returnUrl || window.location.href
+                }
             })
-            if (url) window.location.href = url
+            if (response?.url) {
+                window.location.href = response.url
+            }
+        } catch (e: any) {
+            error.value = e.message || 'Portal failed'
+            console.error('Portal error:', e)
         } finally {
             loading.value = false
         }
     }
 
-    return { loading, checkout, openPortal }
+    return {
+        loading: computed(() => loading.value),
+        error: computed(() => error.value),
+        checkout,
+        openPortal,
+        provider
+    }
 }
+

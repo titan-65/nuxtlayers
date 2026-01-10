@@ -14,9 +14,10 @@ export default defineEventHandler(async (event) => {
 
     try {
         const decodedId = decodeURIComponent(id)
+        const sanitizedId = decodedId.replace('@', '').replace('/', '-')
 
         // Get layer doc to check it exists
-        const layerDoc = await db.collection('layers').doc(decodedId).get()
+        const layerDoc = await db.collection('layers').doc(sanitizedId).get()
 
         if (!layerDoc.exists) {
             throw createError({
@@ -30,7 +31,7 @@ export default defineEventHandler(async (event) => {
         // Get latest version from versions subcollection
         const versionsSnapshot = await db
             .collection('layers')
-            .doc(decodedId)
+            .doc(sanitizedId)
             .collection('versions')
             .orderBy('publishedAt', 'desc')
             .limit(1)

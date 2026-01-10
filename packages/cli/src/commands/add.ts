@@ -38,25 +38,27 @@ export async function addLayer(layerName: string, version?: string) {
         }
 
         // Build GitHub source string
+        // e.g., github:titan-65/nuxtlayers/layers/auth-firebase
         const layerDirName = normalizedName.replace('@vantol/', '')
-        const githubSource = version
+        const githubSource = version 
             ? `github:${GITHUB_REPO}/layers/${layerDirName}#v${version}`
             : `github:${GITHUB_REPO}/layers/${layerDirName}`
 
-        // Check if already in config
+        // Check if layer is already in nuxt.config
         const configPath = await fs.pathExists(nuxtConfigPath) ? nuxtConfigPath : nuxtConfigJsPath
         const configContent = await fs.readFile(configPath, 'utf-8')
-
-        if (configContent.includes(githubSource) || configContent.includes(`/${layerDirName}'`)) {
+        
+        if (configContent.includes(githubSource) || configContent.includes(`/${layerDirName}`)) {
             spinner.warn(`Layer ${chalk.yellow(normalizedName)} is already configured`)
+            console.log(chalk.gray('Check your nuxt.config.ts extends array.'))
             return
         }
 
-        // Update nuxt.config.ts
+        // Update nuxt.config.ts with GitHub source
         spinner.text = 'Updating nuxt.config.ts...'
         await addGitHubLayerToConfig(githubSource, layer.dependencies || [])
 
-        // Install dependencies
+        // Install dependencies if any
         if (layer.dependencies && layer.dependencies.length > 0) {
             spinner.text = 'Installing dependencies...'
             const pm = await detectPackageManager()
@@ -72,19 +74,29 @@ export async function addLayer(layerName: string, version?: string) {
             }
         }
 
+        // Track download
         await trackDownload(normalizedName)
+
         spinner.succeed(`Added ${chalk.green(normalizedName)} v${layer.version}`)
 
         console.log('')
         console.log(chalk.gray('  Source:') + ` ${githubSource}`)
-        console.log(chalk.gray('  Config:') + ' extends array updated')
+        console.log(chalk.gray('  nuxt.config.ts:') + ' extends array updated')
+
+        if (layer.dependencies && layer.dependencies.length > 0) {
+            console.log(chalk.gray('  Dependencies:') + ` ${layer.dependencies.join(', ')}`)
+        }
+
         console.log('')
         console.log(chalk.cyan('Next steps:'))
         console.log(chalk.gray('  1. Restart your dev server'))
-        console.log(chalk.gray('  2. Nuxt will fetch the layer automatically'))
+        console.log(chalk.gray('  2. The layer will be fetched automatically by Nuxt'))
 
     } catch (error: any) {
         spinner.fail(`Failed to add layer: ${error.message}`)
-        if (process.env.DEBUG) console.error(error)
+
+        if (process.env.DEBUG) {
+            console.error(error)
+        }
     }
 }

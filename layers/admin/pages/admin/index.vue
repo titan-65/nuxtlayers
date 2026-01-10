@@ -1,18 +1,14 @@
 <script setup lang="ts">
 /**
  * Admin dashboard index page.
+ * Fetches stats from configured data source.
  */
 definePageMeta({
   layout: 'admin',
   middleware: 'auth'
 })
 
-const stats = ref([
-  { title: 'Total Users', value: '1,234', change: 12 },
-  { title: 'Revenue', value: '$45,678', change: 8 },
-  { title: 'Orders', value: '567', change: -3 },
-  { title: 'Active Sessions', value: '89', change: 15 }
-])
+const { stats, loading } = useAdminStats()
 </script>
 
 <template>

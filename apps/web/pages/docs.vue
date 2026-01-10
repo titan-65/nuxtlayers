@@ -6,20 +6,7 @@ useHead({
 
 <template>
   <div class="min-h-screen bg-[#0A0A0A] text-white selection:bg-orange-500 selection:text-black">
-    <!-- Navigation -->
-    <nav class="sticky top-0 z-50 border-b border-white/10 bg-[#0A0A0A]/90 backdrop-blur-sm">
-      <div class="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-2">
-          <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
-          <span class="text-xs font-bold uppercase tracking-widest">NuxtLayers</span>
-        </NuxtLink>
-        <div class="flex items-center gap-6">
-          <NuxtLink to="/layers" class="text-xs font-mono text-gray-500 hover:text-white transition-colors uppercase">Browse</NuxtLink>
-          <NuxtLink to="/docs" class="text-xs font-mono text-white uppercase">Docs</NuxtLink>
-          <NuxtLink to="/login" class="dark-btn text-xs">Log In</NuxtLink>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation provided by default layout -->
 
     <div class="max-w-4xl mx-auto px-6 py-12">
       <div class="dark-section-title mb-4">

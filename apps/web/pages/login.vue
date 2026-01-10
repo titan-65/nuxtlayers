@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { gsap } from 'gsap'
+ import { storeToRefs } from 'pinia'
 
 useHead({ title: 'Sign In - NuxtLayers' })
 
-// Use the auth-firebase layer composable (dogfooding!)
-const { user, loading, signInWithGoogle, signOut } = useFirebaseAuth()
+const authStore = useAuthStore()
+const { user, loading } = storeToRefs(authStore)
+const { signInWithGoogle, logout } = authStore
 
 const isLoading = ref(false)
 const error = ref<string | null>(null)
@@ -29,10 +31,9 @@ watch(user, (newUser) => {
   }
 })
 
-// Initialize auth on mount
+// Initialize auth on mount (now handled globally but good to ensure)
 onMounted(async () => {
-  const { init } = useFirebaseAuth()
-  await init()
+  await authStore.initialize()
   
   // Animate entrance
   gsap.from('.login-card', {
@@ -71,7 +72,7 @@ onMounted(async () => {
         <NuxtLink to="/dashboard" class="dark-btn w-full block text-center mb-3">
           Go to Dashboard
         </NuxtLink>
-        <button @click="signOut" class="dark-btn-outline w-full">
+        <button @click="logout" class="dark-btn-outline w-full">
           Sign Out
         </button>
       </div>

@@ -15,9 +15,10 @@ export default defineEventHandler(async (event) => {
 
     try {
         const decodedId = decodeURIComponent(id)
+        const sanitizedId = decodedId.replace('@', '').replace('/', '-')
 
         // Increment download count
-        await db.collection('layers').doc(decodedId).update({
+        await db.collection('layers').doc(sanitizedId).update({
             downloads: FieldValue.increment(1)
         })
 

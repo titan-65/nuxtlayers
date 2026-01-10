@@ -1,67 +1,17 @@
 <script setup lang="ts">
 /**
  * Blog post detail page.
- * Displays individual post with comments and reactions.
+ * Fetches post from configured data source.
  */
 const route = useRoute()
 const slug = computed(() => route.params.slug as string)
 
 const { title: blogTitle, theme, basePath, authorName, authorAvatar } = useBlogConfig()
-
-// Sample post data - in production, fetch from Firestore or CMS
-const post = ref({
-  slug: slug.value,
-  title: 'Introducing NuxtLayers',
-  excerpt: 'Install production-ready features in your Nuxt app with a single command.',
-  content: `
-# Introducing NuxtLayers
-
-We're excited to announce **NuxtLayers** — a marketplace and CLI tool for discovering and installing pre-built Nuxt layers.
-
-## What are Nuxt Layers?
-
-Nuxt Layers allow you to extend your Nuxt application with reusable features. Think of them as "plugins on steroids" — they can include:
-
-- Components
-- Composables
-- Pages
-- Server routes
-- Middleware
-- And more!
-
-## Getting Started
-
-Install any layer with a single command:
-
-\`\`\`bash
-npx nuxt-layers add @vantol/auth-firebase
-\`\`\`
-
-That's it! The layer is automatically configured and ready to use.
-
-## Available Layers
-
-- **@vantol/auth-firebase** — Google SSO with Firebase
-- **@vantol/blog** — Real-time blog with comments
-- **@vantol/admin** — Admin dashboard
-- **@vantol/payments** — Stripe integration
-
-## What's Next
-
-We're working on more layers and features. Stay tuned!
-  `.trim(),
-  date: 'Jan 8, 2026',
-  tags: ['announcement', 'release'],
-  readTime: '3 min read',
-  author: authorName.value,
-  authorAvatar: authorAvatar.value
-})
+const { post, loading, error, refresh } = useBlogPost(slug)
 
 useHead({
-  title: () => `${post.value.title} | ${blogTitle.value}`
+  title: () => post.value ? `${post.value.title} | ${blogTitle.value}` : blogTitle.value
 })
-
-const loading = ref(false)
 </script>
 
 <template>
@@ -79,7 +29,7 @@ const loading = ref(false)
       <div class="blog-spinner"></div>
     </div>
 
-    <article v-else class="blog-article">
+    <article v-else-if="post" class="blog-article">
       <!-- Header -->
       <header class="blog-article-header">
         <slot name="header">
@@ -94,12 +44,12 @@ const loading = ref(false)
           <div class="blog-article-meta">
             <div class="blog-article-author">
               <img 
-                v-if="post.authorAvatar" 
-                :src="post.authorAvatar" 
-                :alt="post.author"
+                v-if="post.author?.avatar" 
+                :src="post.author.avatar" 
+                :alt="post.author?.name"
                 class="blog-article-avatar"
               />
-              <span>{{ post.author }}</span>
+              <span>{{ post.author?.name || authorName }}</span>
             </div>
             <span>{{ post.date }}</span>
             <span>{{ post.readTime }}</span>
@@ -110,7 +60,7 @@ const loading = ref(false)
       <!-- Content -->
       <div class="blog-article-content">
         <slot name="content">
-          <div v-html="post.content.replace(/\n/g, '<br>')"></div>
+          <div v-if="post.content" v-html="post.content.replace(/\n/g, '<br>')"></div>
         </slot>
       </div>
 

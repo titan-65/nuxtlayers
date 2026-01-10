@@ -1,43 +1,14 @@
 <script setup lang="ts">
 /**
  * Blog listing page.
- * Displays posts with customizable layout via slots.
+ * Fetches posts from configured data source (Firestore, Content, API, or static).
  */
-const { title, description, theme, basePath, postsPerPage } = useBlogConfig()
+const { title, description, theme, basePath, dataSource } = useBlogConfig()
+const { posts, loading, error, refresh } = useBlogPosts()
 
 useHead({
   title: () => title.value
 })
-
-// Sample posts - in production, fetch from Firestore or CMS
-const posts = ref([
-  {
-    slug: 'introducing-nuxtlayers',
-    title: 'Introducing NuxtLayers',
-    excerpt: 'Install production-ready features in your Nuxt app with a single command. Authentication, blog, admin dashboard, and more.',
-    date: 'Jan 8, 2026',
-    tags: ['announcement', 'release'],
-    readTime: '3 min read'
-  },
-  {
-    slug: 'building-nuxt-layers',
-    title: 'Building Reusable Nuxt Layers',
-    excerpt: 'Learn how to create, publish, and share your own Nuxt layers with the community.',
-    date: 'Jan 5, 2026',
-    tags: ['tutorial', 'guide'],
-    readTime: '8 min read'
-  },
-  {
-    slug: 'auth-made-simple',
-    title: 'Authentication Made Simple',
-    excerpt: 'Add Firebase, Clerk, or Better Auth to your Nuxt app in under 5 minutes.',
-    date: 'Jan 3, 2026',
-    tags: ['auth', 'firebase'],
-    readTime: '5 min read'
-  }
-])
-
-const loading = ref(false)
 </script>
 
 <template>

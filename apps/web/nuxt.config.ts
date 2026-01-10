@@ -6,16 +6,18 @@ export default defineNuxtConfig({
         compatibilityVersion: 4
     },
 
-    // Extend auth-firebase and blog layers (dogfooding!)
+    // Extend auth-firebase, blog, and payments layers (dogfooding!)
     extends: [
         '../../layers/auth-firebase',
-        '../../layers/blog'
+        '../../layers/blog',
+        '../../layers/payments'
     ],
 
     modules: [
         '@nuxt/eslint',
         '@nuxtjs/tailwindcss',
-        'shadcn-nuxt'
+        'shadcn-nuxt',
+        '@pinia/nuxt'
     ],
 
     shadcn: {
@@ -40,6 +42,7 @@ export default defineNuxtConfig({
     runtimeConfig: {
         // Server-side only
         firebaseServiceAccount: process.env.FIREBASE_SERVICE_ACCOUNT,
+        adminApiKey: process.env.ADMIN_API_KEY || 'dev-admin-key',
 
         // Public (client + server)
         public: {

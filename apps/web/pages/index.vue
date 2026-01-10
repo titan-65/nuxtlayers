@@ -6,7 +6,7 @@ useHead({
 })
 
 const copied = ref(false)
-const installCommand = 'npx nuxt-layers add @vantol/auth'
+const installCommand = 'npx nuxt-layers add @vantol/auth-firebase'
 
 // Animation refs
 const heroRef = ref<HTMLElement | null>(null)
@@ -20,12 +20,16 @@ const copyCommand = async () => {
   setTimeout(() => { copied.value = false }, 2000)
 }
 
-const featuredLayers = [
-  { id: '@vantol/auth-firebase', tag: 'AUTH', isNew: true, description: 'Firebase Auth with Google SSO, middleware, and user state management.', downloads: '2.4k' },
-  { id: '@vantol/blog', tag: 'CMS', isNew: true, description: 'Full-featured blog with real-time comments, reactions, and analytics.', downloads: '1.8k' },
-  { id: '@vantol/admin', tag: 'UI', isNew: false, description: 'Admin dashboard with sidebar layout, data tables, and charts.', downloads: '1.2k' },
-  { id: '@vantol/payments', tag: 'BILLING', isNew: false, description: 'Stripe checkout, subscriptions, and customer portal integration.', downloads: '980' }
-]
+// Fetch featured layers from API
+const featuredLayers = ref<any[]>([])
+const stats = ref({ totalLayers: 0, totalDownloads: '0', publishers: 0 })
+
+const { data: landingData } = await useFetch('/api/landing/featured')
+
+if (landingData.value?.success) {
+  featuredLayers.value = landingData.value.data.featuredLayers
+  stats.value = landingData.value.data.stats
+}
 
 // GSAP entrance animations
 onMounted(() => {
@@ -68,37 +72,65 @@ onMounted(() => {
     stagger: 0.15,
     delay: 1.5
   })
+
+  // Scroll-triggered animations for all sections
+  const sections = document.querySelectorAll('.animate-section')
+  sections.forEach((section) => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            gsap.from(entry.target.querySelectorAll('.animate-item'), {
+              opacity: 0,
+              y: 40,
+              duration: 0.8,
+              stagger: 0.1,
+              ease: 'power3.out'
+            })
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      { threshold: 0.2 }
+    )
+    observer.observe(section)
+  })
+
+  // Featured cards stagger animation
+  const cardsObserver = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          gsap.from('.feature-card', {
+            opacity: 0,
+            y: 60,
+            scale: 0.95,
+            duration: 0.8,
+            stagger: 0.15,
+            ease: 'power3.out'
+          })
+          cardsObserver.unobserve(entry.target)
+        }
+      })
+    },
+    { threshold: 0.1 }
+  )
+  
+  const cardsContainer = document.querySelector('.cards-container')
+  if (cardsContainer) cardsObserver.observe(cardsContainer)
 })
 </script>
 
 <template>
   <div class="min-h-screen bg-[#0A0A0A] text-white selection:bg-orange-500 selection:text-black overflow-x-hidden">
-    <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 bg-[#0A0A0A]/90 backdrop-blur-sm">
-      <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
-        <NuxtLink to="/" class="flex items-center gap-2">
-          <span class="w-2 h-2 bg-orange-500 rounded-full"></span>
-          <span class="text-xs font-bold uppercase tracking-widest">NuxtLayers</span>
-        </NuxtLink>
-        <div class="hidden md:flex items-center gap-6">
-          <NuxtLink to="/layers" class="text-xs font-mono text-gray-500 hover:text-white transition-colors uppercase">Browse</NuxtLink>
-          <NuxtLink to="/docs" class="text-xs font-mono text-gray-500 hover:text-white transition-colors uppercase">Docs</NuxtLink>
-          <NuxtLink to="/blog" class="text-xs font-mono text-gray-500 hover:text-white transition-colors uppercase">Blog</NuxtLink>
-          <NuxtLink to="/publish" class="text-xs font-mono text-gray-500 hover:text-white transition-colors uppercase">Publish</NuxtLink>
-        </div>
-        <div class="flex items-center gap-3">
-          <NuxtLink to="/login" class="dark-btn-outline text-xs">Log In</NuxtLink>
-          <NuxtLink to="/onboarding" class="dark-btn text-xs">Get Started →</NuxtLink>
-        </div>
-      </div>
-    </nav>
+    <!-- Navigation provided by default layout -->
 
     <!-- Hero Section - Full Screen with RippleGrid -->
     <section class="min-h-screen flex items-center px-6 pt-20 relative overflow-hidden">
       <!-- Background Effect -->
       <ClientOnly>
         <div class="absolute inset-0 z-0">
-          <UiRippleGrid
+          <HeroRippleGrid
             :grid-color="'#F97316'"
             :ripple-intensity="0.03"
             :grid-size="8"

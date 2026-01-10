@@ -14,9 +14,11 @@ export default defineEventHandler(async (event) => {
 
     try {
         // Decode the layer ID (e.g., @vantol/blog -> @vantol%2Fblog)
+        // Decode the layer ID (e.g., @vantol/blog -> @vantol%2Fblog)
         const decodedId = decodeURIComponent(id)
+        const sanitizedId = decodedId.replace('@', '').replace('/', '-')
 
-        const doc = await db.collection('layers').doc(decodedId).get()
+        const doc = await db.collection('layers').doc(sanitizedId).get()
 
         if (!doc.exists) {
             throw createError({
@@ -33,7 +35,7 @@ export default defineEventHandler(async (event) => {
         // Get versions subcollection
         const versionsSnapshot = await db
             .collection('layers')
-            .doc(decodedId)
+            .doc(sanitizedId)
             .collection('versions')
             .orderBy('publishedAt', 'desc')
             .limit(10)
