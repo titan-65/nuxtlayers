@@ -12,6 +12,8 @@ export default defineNuxtConfig({
     extends: [
         '../../layers/auth-firebase',
         '../../layers/blog',
+        '../../layers/waitlist',
+        '../../layers/email',
         '../../layers-private/payments',
         '../../layers-private/saas-kit',
         '../../layers-private/analytics'

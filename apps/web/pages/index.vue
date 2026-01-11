@@ -276,41 +276,191 @@ onMounted(() => {
       </div>
     </section>
 
-    <!-- Featured Layers Section - Full Screen -->
+    <!-- Premium Layers Showcase -->
+    <section class="py-24 px-6 border-t border-white/10 bg-gradient-to-b from-purple-900/10 to-transparent">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-3 mb-4">
+          <span class="text-[10px] font-mono text-purple-400 border border-purple-500 px-2 py-0.5 uppercase">Premium</span>
+          <span class="dark-section-title !mb-0">Layers</span>
+        </div>
+        
+        <div class="flex flex-col lg:flex-row items-start lg:items-end justify-between gap-6 mb-12">
+          <div>
+            <h2 class="text-3xl md:text-4xl font-bold tracking-tight mb-3">
+              Ship faster with<br>
+              <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-blue-400">premium starters</span>
+            </h2>
+            <p class="text-gray-500 max-w-xl">
+              Production-ready layers with advanced features. Teams, billing, analytics, and more.
+            </p>
+          </div>
+          <NuxtLink to="/pricing" class="dark-btn-outline text-xs border-purple-500/50 text-purple-400 hover:bg-purple-500/10">
+            View Pricing →
+          </NuxtLink>
+        </div>
+
+        <!-- Premium Cards -->
+        <div class="grid md:grid-cols-3 gap-6">
+          <!-- SaaS Kit -->
+          <NuxtLink to="/layers/saas-kit" class="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div class="p-6 relative">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-2xl">🚀</span>
+                <span class="text-[10px] font-mono text-purple-400 border border-purple-500/50 px-2 py-0.5">POPULAR</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">SaaS Kit</h3>
+              <p class="text-sm text-gray-500 mb-4">Teams, billing, onboarding, dashboard. Everything to launch a SaaS.</p>
+              <div class="flex items-center justify-between">
+                <code class="text-xs text-orange-500">@vantol/saas-kit</code>
+                <span class="text-sm text-gray-400">$49/mo</span>
+              </div>
+            </div>
+          </NuxtLink>
+
+          <!-- Payments -->
+          <NuxtLink to="/layers/payments" class="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div class="p-6 relative">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-2xl">💳</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">Payments</h3>
+              <p class="text-sm text-gray-500 mb-4">Stripe & Polar integration with checkout, subscriptions, and portals.</p>
+              <div class="flex items-center justify-between">
+                <code class="text-xs text-orange-500">@vantol/payments</code>
+                <span class="text-sm text-gray-400">$39/mo</span>
+              </div>
+            </div>
+          </NuxtLink>
+
+          <!-- Analytics -->
+          <NuxtLink to="/layers/analytics" class="group relative overflow-hidden rounded-2xl border border-white/10 hover:border-purple-500/50 transition-all">
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-600/20 to-blue-600/20 opacity-0 group-hover:opacity-100 transition-opacity" />
+            <div class="p-6 relative">
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-2xl">📊</span>
+              </div>
+              <h3 class="text-xl font-bold mb-2 group-hover:text-purple-400 transition-colors">Analytics</h3>
+              <p class="text-sm text-gray-500 mb-4">Privacy-focused analytics dashboard with real-time tracking.</p>
+              <div class="flex items-center justify-between">
+                <code class="text-xs text-orange-500">@vantol/analytics</code>
+                <span class="text-sm text-gray-400">$29/mo</span>
+              </div>
+            </div>
+          </NuxtLink>
+        </div>
+
+        <!-- Try Demo CTA -->
+        <div class="mt-12 text-center">
+          <NuxtLink 
+            to="/app" 
+            class="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-600 to-blue-600 text-white font-semibold rounded-xl hover:from-purple-500 hover:to-blue-500 transition-all shadow-lg shadow-purple-500/25"
+          >
+            ✨ Try SaaS Kit Demo
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
+
+    <!-- News & Updates Section - Full Screen -->
     <section class="min-h-screen flex flex-col justify-center px-6 border-t border-white/10">
       <div class="max-w-7xl mx-auto w-full py-20">
         <div class="dark-section-title mb-4">
-          <span>Featured</span>
+          <span>News</span>
         </div>
         
         <div class="flex items-end justify-between mb-12">
           <h2 class="text-3xl md:text-4xl font-bold tracking-tight">
-            NuxtLayers news & updates
+            Latest updates & releases
           </h2>
-          <NuxtLink to="/layers" class="dark-btn-outline text-xs hidden md:inline-flex">
-            See All →
+          <NuxtLink to="/blog" class="dark-btn-outline text-xs hidden md:inline-flex">
+            View Blog →
           </NuxtLink>
         </div>
 
-        <!-- Layer Cards Grid -->
-        <div ref="cardsRef" class="grid md:grid-cols-2 gap-6">
-          <NuxtLink
-            v-for="(layer, index) in featuredLayers"
-            :key="layer.id"
-            :to="`/layers/${encodeURIComponent(layer.id)}`"
-            class="dark-card p-6 hover:border-orange-500/50 transition-all duration-300 group hover:scale-[1.02]"
-            :style="{ transitionDelay: `${index * 50}ms` }"
-          >
+        <!-- Announcements Grid -->
+        <div class="grid lg:grid-cols-3 gap-6 mb-12">
+          <!-- Major Announcement -->
+          <div class="lg:col-span-2 dark-card p-8 bg-gradient-to-br from-orange-500/10 to-transparent border-orange-500/30">
             <div class="flex items-center gap-2 mb-4">
-              <span class="text-[10px] font-mono text-orange-500 border border-orange-500 px-2 py-0.5">{{ layer.tag }}</span>
-              <span v-if="layer.isNew" class="text-[10px] font-mono bg-orange-500 text-black px-2 py-0.5">NEW</span>
+              <span class="text-[10px] font-mono bg-orange-500 text-black px-2 py-0.5">ANNOUNCEMENT</span>
+              <span class="text-[10px] font-mono text-gray-500">JAN 2026</span>
             </div>
-            <h3 class="text-lg font-bold mb-3 group-hover:text-orange-500 transition-colors">{{ layer.id }}</h3>
-            <p class="text-sm text-gray-500 font-light mb-6 leading-relaxed">{{ layer.description }}</p>
-            <div class="text-xs font-mono text-orange-500 uppercase group-hover:translate-x-1 transition-transform">
-              Learn More →
+            <h3 class="text-2xl font-bold mb-4 text-orange-500">🚀 Introducing Premium Layers</h3>
+            <p class="text-gray-400 mb-6 leading-relaxed">
+              We're excited to launch our premium layer collection! SaaS Kit, Payments, and Analytics 
+              layers are now available for teams who want to ship faster. Each layer comes with 
+              production-ready code, documentation, and ongoing updates.
+            </p>
+            <NuxtLink to="/layers/saas-kit" class="text-orange-500 font-mono text-sm hover:underline">
+              Explore SaaS Kit →
+            </NuxtLink>
+          </div>
+
+          <!-- Side Updates -->
+          <div class="space-y-4">
+            <!-- Update 1: Waitlist -->
+            <NuxtLink to="/layers/waitlist" class="block dark-card p-5 hover:border-orange-500/30 transition-all group">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-mono text-orange-500 border border-orange-500 px-2 py-0.5">NEW LAYER</span>
+              </div>
+              <h4 class="font-bold mb-1 group-hover:text-orange-500 transition-colors">@vantol/waitlist</h4>
+              <p class="text-sm text-gray-500">Pre-launch waitlist with viral referral tracking.</p>
+            </NuxtLink>
+
+            <!-- Update 2: Email -->
+            <NuxtLink to="/layers/email" class="block dark-card p-5 hover:border-blue-500/30 transition-all group">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-mono text-blue-500 border border-blue-500 px-2 py-0.5">NEW LAYER</span>
+              </div>
+              <h4 class="font-bold mb-1 group-hover:text-blue-500 transition-colors">@vantol/email</h4>
+              <p class="text-sm text-gray-500">Transactional emails with Resend/Sendgrid.</p>
+            </NuxtLink>
+
+            <!-- Update 3: CLI -->
+            <div class="dark-card p-5 hover:border-green-500/30 transition-all">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-mono text-green-500 border border-green-500 px-2 py-0.5">RELEASE</span>
+              </div>
+              <h4 class="font-bold mb-1">CLI v2.0 Released</h4>
+              <p class="text-sm text-gray-500">License keys, faster installs.</p>
             </div>
-          </NuxtLink>
+
+            <!-- Update 4: Analytics -->
+            <NuxtLink to="/layers/analytics" class="block dark-card p-5 hover:border-purple-500/30 transition-all group">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-mono text-purple-500 border border-purple-500 px-2 py-0.5">PREMIUM</span>
+              </div>
+              <h4 class="font-bold mb-1 group-hover:text-purple-500 transition-colors">@vantol/analytics</h4>
+              <p class="text-sm text-gray-500">Privacy-focused analytics dashboard.</p>
+            </NuxtLink>
+          </div>
+        </div>
+
+        <!-- Featured Layers -->
+        <div class="border-t border-white/10 pt-12">
+          <h3 class="text-xl font-bold mb-6 text-gray-400">Featured Layers</h3>
+          <div ref="cardsRef" class="grid md:grid-cols-2 lg:grid-cols-3 gap-6 cards-container">
+            <NuxtLink
+              v-for="(layer, index) in featuredLayers.slice(0, 6)"
+              :key="layer.id"
+              :to="`/layers/${encodeURIComponent(layer.id)}`"
+              class="dark-card p-6 hover:border-orange-500/50 transition-all duration-300 group hover:scale-[1.02] feature-card"
+              :style="{ transitionDelay: `${index * 50}ms` }"
+            >
+              <div class="flex items-center gap-2 mb-4">
+                <span class="text-[10px] font-mono text-orange-500 border border-orange-500 px-2 py-0.5">{{ layer.tag }}</span>
+                <span v-if="layer.isNew" class="text-[10px] font-mono bg-orange-500 text-black px-2 py-0.5">NEW</span>
+              </div>
+              <h3 class="text-lg font-bold mb-3 group-hover:text-orange-500 transition-colors">{{ layer.id }}</h3>
+              <p class="text-sm text-gray-500 font-light mb-4 leading-relaxed line-clamp-2">{{ layer.description }}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-600">{{ layer.downloads }} downloads</span>
+                <span class="text-xs font-mono text-orange-500 group-hover:translate-x-1 transition-transform">→</span>
+              </div>
+            </NuxtLink>
+          </div>
         </div>
       </div>
     </section>

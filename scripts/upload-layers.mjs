@@ -46,6 +46,9 @@ const LAYERS = [
     { id: 'blog', premium: false },
     { id: 'admin', premium: false },
     { id: 'landing', premium: false },
+    { id: 'waitlist', premium: false },
+    { id: 'email', premium: false },
+    { id: 'database', premium: false },
 
     // PREMIUM layers - requires license
     { id: 'payments', premium: true },

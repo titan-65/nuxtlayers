@@ -1,0 +1,16 @@
+{
+    "id": "@vantol/email",
+    "name": "@vantol/email",
+    "version": "1.0.0",
+    "description": "Transactional email templates with Resend and Sendgrid integration",
+    "tags": [
+        "email",
+        "transactional",
+        "resend",
+        "sendgrid"
+    ],
+    "category": "Communication",
+    "author": "vantol",
+    "license": "MIT",
+    "official": true
+}

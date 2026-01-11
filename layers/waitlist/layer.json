@@ -1,0 +1,16 @@
+{
+    "id": "@vantol/waitlist",
+    "name": "@vantol/waitlist",
+    "version": "1.0.0",
+    "description": "Pre-launch waitlist with referral tracking, viral loops, and beautiful signup forms",
+    "tags": [
+        "waitlist",
+        "referral",
+        "viral",
+        "marketing"
+    ],
+    "category": "Marketing",
+    "author": "vantol",
+    "license": "MIT",
+    "official": true
+}

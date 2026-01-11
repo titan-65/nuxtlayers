@@ -1,0 +1,20 @@
+{
+    "id": "@vantol/database",
+    "name": "@vantol/database",
+    "version": "1.0.0",
+    "description": "Database-agnostic layer supporting Firebase, Supabase, Neon, Convex, PostgreSQL, and MongoDB",
+    "tags": [
+        "database",
+        "orm",
+        "supabase",
+        "firebase",
+        "postgres",
+        "mongodb",
+        "convex",
+        "neon"
+    ],
+    "category": "Data",
+    "author": "vantol",
+    "license": "MIT",
+    "official": true
+}
