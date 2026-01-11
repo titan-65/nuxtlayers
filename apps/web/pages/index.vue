@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { gsap } from 'gsap'
+import { ShieldCheck, Database, Users, Mail, BarChart3, CreditCard } from 'lucide-vue-next'
 
 useHead({
   title: 'NuxtLayers - Discover & Install Nuxt Layers'
@@ -427,7 +428,16 @@ onMounted(() => {
               <p class="text-sm text-gray-500">License keys, faster installs.</p>
             </div>
 
-            <!-- Update 4: Analytics -->
+            <!-- Update 4: Database -->
+            <NuxtLink to="/layers/database" class="block dark-card p-5 hover:border-orange-500/30 transition-all group">
+              <div class="flex items-center gap-2 mb-2">
+                <span class="text-[10px] font-mono text-orange-500 border border-orange-500 px-2 py-0.5">NEW LAYER</span>
+              </div>
+              <h4 class="font-bold mb-1 group-hover:text-orange-500 transition-colors">@vantol/database</h4>
+              <p class="text-sm text-gray-500">Agnostic database layer (Firebase, Supabase, Neon).</p>
+            </NuxtLink>
+
+            <!-- Update 5: Analytics -->
             <NuxtLink to="/layers/analytics" class="block dark-card p-5 hover:border-purple-500/30 transition-all group">
               <div class="flex items-center gap-2 mb-2">
                 <span class="text-[10px] font-mono text-purple-500 border border-purple-500 px-2 py-0.5">PREMIUM</span>
@@ -505,7 +515,47 @@ onMounted(() => {
         </div>
       </div>
     </section>
+    <!-- Built With Section -->
+    <section class="border-t border-white/10 py-16 px-6 bg-[#0A0A0A]">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex items-center gap-2 mb-8 justify-center">
+          <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+          <span class="text-xs font-mono text-gray-500 uppercase tracking-widest">Built With</span>
+        </div>
+        
+        <h2 class="text-2xl md:text-3xl font-bold text-center mb-4">This site uses NuxtLayers</h2>
+        <p class="text-gray-500 text-center mb-12 max-w-xl mx-auto font-light">
+          We practice what we preach. The NuxtLayers registry itself is built using our own layers.
+        </p>
 
+        <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <NuxtLink to="/layers/auth-firebase" class="dark-card p-4 text-center hover:border-orange-500/50 transition-colors group">
+            <ShieldCheck class="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-orange-500 transition-colors" />
+            <div class="text-[10px] font-mono text-gray-500 group-hover:text-orange-500 uppercase">Auth</div>
+          </NuxtLink>
+          <NuxtLink to="/layers/database" class="dark-card p-4 text-center hover:border-orange-500/50 transition-colors group">
+            <Database class="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-orange-500 transition-colors" />
+            <div class="text-[10px] font-mono text-gray-500 group-hover:text-orange-500 uppercase">Database</div>
+          </NuxtLink>
+          <NuxtLink to="/layers/waitlist" class="dark-card p-4 text-center hover:border-orange-500/50 transition-colors group">
+            <Users class="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-orange-500 transition-colors" />
+            <div class="text-[10px] font-mono text-gray-500 group-hover:text-orange-500 uppercase">Waitlist</div>
+          </NuxtLink>
+          <NuxtLink to="/layers/email" class="dark-card p-4 text-center hover:border-blue-500/50 transition-colors group">
+            <Mail class="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-blue-500 transition-colors" />
+            <div class="text-[10px] font-mono text-gray-500 group-hover:text-blue-500 uppercase">Email</div>
+          </NuxtLink>
+          <NuxtLink to="/layers/analytics" class="dark-card p-4 text-center hover:border-purple-500/50 transition-colors group">
+            <BarChart3 class="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-purple-500 transition-colors" />
+            <div class="text-[10px] font-mono text-gray-500 group-hover:text-purple-500 uppercase">Analytics</div>
+          </NuxtLink>
+          <NuxtLink to="/layers/payments" class="dark-card p-4 text-center hover:border-green-500/50 transition-colors group">
+            <CreditCard class="w-6 h-6 mx-auto mb-2 text-gray-400 group-hover:text-green-500 transition-colors" />
+            <div class="text-[10px] font-mono text-gray-500 group-hover:text-green-500 uppercase">Payments</div>
+          </NuxtLink>
+        </div>
+      </div>
+    </section>
     <!-- Footer -->
     <footer class="py-8 px-6 border-t border-white/10">
       <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">

@@ -1,0 +1,32 @@
+{
+    "$schema": "https://openapi.vercel.sh/vercel.json",
+    "version": 2,
+    "framework": "nuxtjs",
+    "buildCommand": "cd apps/web && npm install && npm run build",
+    "outputDirectory": "apps/web/.output",
+    "installCommand": "npm install",
+    "devCommand": "cd apps/web && npm run dev",
+    "env": {
+        "NUXT_PUBLIC_API_BASE": "@nuxt_public_api_base",
+        "NUXT_FIREBASE_PROJECT_ID": "@nuxt_firebase_project_id",
+        "NUXT_FIREBASE_API_KEY": "@nuxt_firebase_api_key",
+        "FIREBASE_SERVICE_ACCOUNT": "@firebase_service_account",
+        "STRIPE_SECRET_KEY": "@stripe_secret_key",
+        "STRIPE_WEBHOOK_SECRET": "@stripe_webhook_secret"
+    },
+    "headers": [
+        {
+            "source": "/api/(.*)",
+            "headers": [
+                {
+                    "key": "Access-Control-Allow-Origin",
+                    "value": "*"
+                },
+                {
+                    "key": "Access-Control-Allow-Methods",
+                    "value": "GET, POST, PUT, DELETE, OPTIONS"
+                }
+            ]
+        }
+    ]
+}

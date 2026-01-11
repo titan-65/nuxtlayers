@@ -3,19 +3,25 @@ import { getDb } from '../../utils/firebase'
 /**
  * Seed the Firestore database with layer metadata.
  * POST /api/admin/seed
+ * Body: { force: true } to reseed even if data exists
  */
 export default defineEventHandler(async (event) => {
     try {
+        const body = await readBody(event).catch(() => ({}))
+        const force = body?.force === true
+
         const db = getDb()
         const layersCollection = db.collection('layers')
 
-        // Check if already seeded
-        const existing = await layersCollection.limit(1).get()
-        if (!existing.empty) {
-            return {
-                success: true,
-                message: 'Database already seeded',
-                count: (await layersCollection.count().get()).data().count
+        // Check if already seeded (skip check if force is true)
+        if (!force) {
+            const existing = await layersCollection.limit(1).get()
+            if (!existing.empty) {
+                return {
+                    success: true,
+                    message: 'Database already seeded',
+                    count: (await layersCollection.count().get()).data().count
+                }
             }
         }
 
@@ -136,6 +142,45 @@ export default defineEventHandler(async (event) => {
                 premium: true,
                 tags: ['analytics', 'dashboard', 'charts', 'tracking'],
                 downloads: 380,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }
+            },
+            {
+                id: '@vantol/waitlist',
+                name: '@vantol/waitlist',
+                version: '1.0.0',
+                description: 'Pre-launch waitlist with viral referral tracking and position management.',
+                dependencies: [],
+                official: true,
+                tags: ['waitlist', 'referrals', 'launch', 'viral'],
+                downloads: 520,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }
+            },
+            {
+                id: '@vantol/email',
+                name: '@vantol/email',
+                version: '1.0.0',
+                description: 'Transactional emails with Resend/Sendgrid and beautiful Vue templates.',
+                dependencies: ['resend'],
+                official: true,
+                tags: ['email', 'resend', 'sendgrid', 'templates'],
+                downloads: 480,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }
+            },
+            {
+                id: '@vantol/database',
+                name: '@vantol/database',
+                version: '1.0.0',
+                description: 'Database-agnostic layer supporting Firebase, Supabase, Neon, Convex, PostgreSQL, and MongoDB.',
+                dependencies: [],
+                official: true,
+                tags: ['database', 'orm', 'supabase', 'firebase', 'postgres', 'mongodb'],
+                downloads: 350,
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }

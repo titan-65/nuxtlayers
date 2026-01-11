@@ -61,3 +61,4 @@ layers-stubs/
 
 # Premium layers backup (when moving to private storage)
 layers-private/
+.vercel
