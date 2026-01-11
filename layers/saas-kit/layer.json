@@ -1,26 +1,26 @@
 {
-    "id": "@vantol/saas-kit",
-    "name": "SaaS Kit",
-    "version": "1.0.0",
-    "description": "Complete SaaS starter with teams, subscriptions, onboarding, and billing",
-    "category": "SaaS",
-    "author": "Vantol",
-    "license": "premium",
-    "premium": true,
-    "price": "$49/mo",
-    "features": [
-        "Team/organization management",
-        "Subscription billing with Polar",
-        "Multi-step onboarding wizard",
-        "Settings dashboard",
-        "Member invitations & roles",
-        "Modern UI with shadcn-vue"
-    ],
-    "dependencies": [
-        "@vantol/payments",
-        "@vantol/auth-firebase"
-    ],
-    "npmDependencies": {},
-    "github": "github:titan-65/nuxtlayers/layers/saas-kit",
-    "docs": "https://nuxtlayers.dev/docs/saas-kit"
+  "id": "@vantol/saas-kit",
+  "name": "@vantol/saas-kit",
+  "version": "1.0.0",
+  "description": "Complete SaaS starter with teams, subscriptions, onboarding, billing, and modern UI.",
+  "category": "Premium",
+  "author": "Vantol",
+  "license": "premium",
+  "premium": true,
+  "price": "$49/mo",
+  "features": [
+    "Team management with roles",
+    "Subscription & billing integration",
+    "Multi-step onboarding wizard",
+    "Modern dashboard UI",
+    "Settings pages (profile, team, members, billing)",
+    "Pinia stores for state management"
+  ],
+  "dependencies": [
+    "@vantol/payments",
+    "@vantol/auth-firebase"
+  ],
+  "github": "github:titan-65/nuxtlayers/layers/saas-kit",
+  "docs": "https://nuxtlayers.dev/docs/saas-kit",
+  "installCommand": "npx nuxt-layers add @vantol/saas-kit"
 }

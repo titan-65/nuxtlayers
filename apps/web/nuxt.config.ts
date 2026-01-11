@@ -6,13 +6,15 @@ export default defineNuxtConfig({
         compatibilityVersion: 4
     },
 
-    // Extend auth-firebase, blog, payments, saas-kit, and analytics layers (dogfooding!)
+    // Extend layers for dogfooding
+    // FREE layers: from layers/
+    // PREMIUM layers: from layers-private/ (actual source, gitignored)
     extends: [
         '../../layers/auth-firebase',
         '../../layers/blog',
-        '../../layers/payments',
-        '../../layers/saas-kit',
-        '../../layers/analytics'
+        '../../layers-private/payments',
+        '../../layers-private/saas-kit',
+        '../../layers-private/analytics'
     ],
 
     modules: [

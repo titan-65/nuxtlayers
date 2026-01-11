@@ -27,15 +27,21 @@ const STORAGE_BUCKET = 'layers-854b4.appspot.com'
 const LAYERS_DIR = path.join(__dirname, '..', 'layers')
 const TEMP_DIR = path.join(__dirname, '..', '.tmp-tarballs')
 
-// Layer IDs to package
-const LAYER_IDS = [
-    'auth-firebase',
-    'auth-clerk',
-    'auth-better',
-    'blog',
-    'admin',
-    'payments',
-    'landing'
+// Layer definitions with premium status
+// Premium layers are NOT made public - only accessible via signed URLs
+const LAYERS = [
+    // FREE layers - public access
+    { id: 'auth-firebase', premium: false },
+    { id: 'auth-clerk', premium: false },
+    { id: 'auth-better', premium: false },
+    { id: 'blog', premium: false },
+    { id: 'admin', premium: false },
+    { id: 'landing', premium: false },
+
+    // PREMIUM layers - requires license
+    { id: 'payments', premium: true },
+    { id: 'saas-kit', premium: true },
+    { id: 'analytics', premium: true }
 ]
 
 async function initFirebase() {
@@ -99,7 +105,7 @@ async function packageLayer(layerId) {
     }
 }
 
-async function uploadLayer(bucket, db, layerInfo) {
+async function uploadLayer(bucket, db, layerInfo, isPremium) {
     const { layerId, version, tarballPath, tarballName } = layerInfo
 
     // Upload to Firebase Storage
@@ -110,27 +116,38 @@ async function uploadLayer(bucket, db, layerInfo) {
             contentType: 'application/gzip',
             metadata: {
                 layerId: `@vantol/${layerId}`,
-                version
+                version,
+                premium: isPremium ? 'true' : 'false'
             }
         }
     })
 
-    // Make public
-    await bucket.file(destination).makePublic()
-
-    const publicUrl = `https://storage.googleapis.com/${STORAGE_BUCKET}/${destination}`
-    console.log(`  ✓ Uploaded: ${publicUrl}`)
+    let url
+    if (isPremium) {
+        // PREMIUM: Keep private, only accessible via signed URLs
+        console.log(`  🔒 PREMIUM layer - NOT made public`)
+        url = `gs://${STORAGE_BUCKET}/${destination}` // Internal reference
+    } else {
+        // FREE: Make public for direct access
+        await bucket.file(destination).makePublic()
+        url = `https://storage.googleapis.com/${STORAGE_BUCKET}/${destination}`
+        console.log(`  ✓ Uploaded (public): ${url}`)
+    }
 
     // Update Firestore with tarball URL
     const docId = `vantol-${layerId}`
-    const versionRef = db.collection('layers').doc(docId).collection('versions').doc(version)
+    const layerRef = db.collection('layers').doc(docId)
+    const versionRef = layerRef.collection('versions').doc(version)
+
+    // Mark layer as premium in Firestore
+    await layerRef.update({ premium: isPremium })
 
     await versionRef.update({
-        tarballUrl: publicUrl
+        tarballUrl: url
     })
     console.log(`  ✓ Updated Firestore: ${docId}/versions/${version}`)
 
-    return publicUrl
+    return url
 }
 
 async function main() {
@@ -146,14 +163,15 @@ async function main() {
         console.log('Packaging layers...')
         const results = []
 
-        for (const layerId of LAYER_IDS) {
-            console.log(`\n[${layerId}]`)
+        for (const layer of LAYERS) {
+            const { id: layerId, premium } = layer
+            console.log(`\n[${layerId}] ${premium ? '🔐 PREMIUM' : '🆓 FREE'}`)
 
             const layerInfo = await packageLayer(layerId)
             if (!layerInfo) continue
 
-            const url = await uploadLayer(storage, db, layerInfo)
-            results.push({ layerId, url })
+            const url = await uploadLayer(storage, db, layerInfo, premium)
+            results.push({ layerId, url, premium })
         }
 
         // Cleanup

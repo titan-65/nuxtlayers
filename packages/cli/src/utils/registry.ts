@@ -1,10 +1,13 @@
 import fs from 'fs-extra'
 import path from 'path'
 import os from 'os'
-import tar from 'tar'
+import * as tar from 'tar'
 
 // Default to localhost for development, override with env var for production
 const REGISTRY_URL = process.env.NUXTLAYERS_REGISTRY || 'http://localhost:3001'
+
+// License key can be set via env var or passed to functions
+let storedLicenseKey: string | undefined = process.env.NUXTLAYERS_LICENSE
 
 export interface Layer {
     id?: string
@@ -14,6 +17,7 @@ export interface Layer {
     tarballUrl: string
     dependencies?: string[]
     official?: boolean
+    premium?: boolean
     downloads?: number
     tags?: string[]
 }
@@ -25,6 +29,24 @@ export interface LayerSearchResult {
 export interface LayerResponse {
     success: boolean
     data: Layer
+}
+
+export interface DownloadResponse {
+    success: boolean
+    premium: boolean
+    layer: string
+    version: string
+    downloadUrl: string
+    expiresIn?: string
+    message?: string
+}
+
+export function setLicenseKey(key: string): void {
+    storedLicenseKey = key
+}
+
+export function getLicenseKey(): string | undefined {
+    return storedLicenseKey
 }
 
 export async function fetchLayer(name: string, version?: string): Promise<Layer | null> {
@@ -82,13 +104,31 @@ export async function searchRegistry(query: string): Promise<Layer[]> {
     }
 }
 
-export async function trackDownload(layerName: string): Promise<void> {
-    try {
-        const url = `${REGISTRY_URL}/api/layers/${encodeURIComponent(layerName)}/download`
-        await fetch(url, { method: 'POST' })
-    } catch {
-        // Silently fail download tracking
+/**
+ * Request download URL for a layer.
+ * For premium layers, this validates the license and returns a signed URL.
+ */
+export async function requestDownload(layerName: string, licenseKey?: string): Promise<DownloadResponse> {
+    const url = `${REGISTRY_URL}/api/layers/${encodeURIComponent(layerName)}/download`
+
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            licenseKey: licenseKey || storedLicenseKey
+        })
+    })
+
+    const json = await response.json() as DownloadResponse
+
+    if (!response.ok) {
+        const errorMessage = (json as any).message || `HTTP ${response.status}`
+        throw new Error(errorMessage)
     }
+
+    return json
 }
 
 export async function downloadLayer(tarballUrl: string): Promise<string> {
@@ -109,6 +149,33 @@ export async function downloadLayer(tarballUrl: string): Promise<string> {
         return tempPath
     } catch (error) {
         throw new Error(`Download failed: ${error}`)
+    }
+}
+
+/**
+ * Download a layer with license validation for premium layers.
+ */
+export async function downloadLayerWithLicense(
+    layerName: string,
+    licenseKey?: string
+): Promise<{ tarballPath: string; version: string }> {
+    // First, request the download (validates license for premium)
+    const downloadInfo = await requestDownload(layerName, licenseKey)
+
+    if (!downloadInfo.success) {
+        throw new Error('Download request failed')
+    }
+
+    if (downloadInfo.premium) {
+        console.log(`🔐 Premium layer - license validated`)
+    }
+
+    // Download the tarball
+    const tarballPath = await downloadLayer(downloadInfo.downloadUrl)
+
+    return {
+        tarballPath,
+        version: downloadInfo.version
     }
 }
 

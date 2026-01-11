@@ -29,3 +29,35 @@ Thumbs.db
 
 # Turbo
 .turbo/
+
+# Premium Layers - Keep stubs (layer.json, README.md, nuxt.config.ts) but ignore source files
+# The stubs are for discoverability in the public repo
+# Actual source is in layers-private/ and uploaded to Firebase
+
+# Ignore source subdirectories of premium layers (but keep root stub files)
+layers/payments/components/
+layers/payments/composables/
+layers/payments/pages/
+layers/payments/layouts/
+layers/payments/server/
+
+layers/saas-kit/components/
+layers/saas-kit/composables/
+layers/saas-kit/pages/
+layers/saas-kit/layouts/
+layers/saas-kit/server/
+
+layers/analytics/components/
+layers/analytics/composables/
+layers/analytics/pages/
+layers/analytics/layouts/
+layers/analytics/server/
+
+# Keep stubs directory for reference (not committed, generated)
+layers-stubs/
+
+# Temporary files from layer packaging
+.tmp-tarballs/
+
+# Premium layers backup (when moving to private storage)
+layers-private/

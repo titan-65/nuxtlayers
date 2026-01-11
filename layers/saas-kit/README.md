@@ -1,21 +1,21 @@
-# @vantol/payments
+# @vantol/saas-kit
 
-Stripe and Polar integration with checkout, subscriptions, and customer portal.
+Complete SaaS starter with teams, subscriptions, onboarding, billing, and modern UI.
 
 ## 🔐 Premium Layer
 
 This is a premium layer that requires a valid license to use.
 
-**Price:** $39/mo
+**Price:** $49/mo
 
 ## Features
 
-- Stripe integration
-- Polar.sh integration
-- Checkout flow
-- Subscription management
-- Customer portal
-- License validation
+- Team management with roles
+- Subscription & billing integration
+- Multi-step onboarding wizard
+- Modern dashboard UI
+- Settings pages (profile, team, members, billing)
+- Pinia stores for state management
 
 ## Installation
 
@@ -23,19 +23,19 @@ This is a premium layer that requires a valid license to use.
 
 2. **Install with your license key:**
    ```bash
-   npx nuxt-layers add @vantol/payments --license YOUR_LICENSE_KEY
+   npx nuxt-layers add @vantol/saas-kit --license YOUR_LICENSE_KEY
    ```
 
 3. **Configure in your nuxt.config.ts:**
    ```ts
    export default defineNuxtConfig({
-     extends: ['@vantol/payments']
+     extends: ['@vantol/saas-kit']
    })
    ```
 
 ## Documentation
 
-Full documentation available at [nuxtlayers.dev/docs/payments](https://nuxtlayers.dev/docs/payments)
+Full documentation available at [nuxtlayers.dev/docs/saas-kit](https://nuxtlayers.dev/docs/saas-kit)
 
 ## Support
 

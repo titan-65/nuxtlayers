@@ -1,18 +1,27 @@
-// @vantol/analytics layer configuration
+// @vantol/analytics - Premium Layer
+// 
+// This is a stub. The full layer is available after license validation.
+// Purchase at: https://nuxtlayers.dev/pricing
+
 export default defineNuxtConfig({
     $meta: {
         name: '@vantol/analytics',
         version: '1.0.0'
     },
 
-    runtimeConfig: {
-        public: {
-            analytics: {
-                enabled: process.env.NUXT_PUBLIC_ANALYTICS_ENABLED !== 'false',
-                trackPageViews: true,
-                trackEvents: true,
-                anonymize: false
-            }
+    hooks: {
+        'app:created': () => {
+            console.warn([
+                '',
+                '⚠️  @vantol/analytics is a PREMIUM layer.',
+                '',
+                '   This stub does not include the actual layer code.',
+                '   To use this layer, you need a valid license.',
+                '',
+                '   1. Purchase at: https://nuxtlayers.dev/pricing',
+                '   2. Install with: npx nuxt-layers add @vantol/analytics --license YOUR_KEY',
+                ''
+            ].join('\n'))
         }
     }
 })

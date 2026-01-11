@@ -1,31 +1,27 @@
-// @vantol/payments layer configuration
+// @vantol/payments - Premium Layer
+// 
+// This is a stub. The full layer is available after license validation.
+// Purchase at: https://nuxtlayers.dev/pricing
+
 export default defineNuxtConfig({
     $meta: {
         name: '@vantol/payments',
         version: '1.0.0'
     },
 
-    runtimeConfig: {
-        // Stripe configuration
-        stripe: {
-            secretKey: process.env.STRIPE_SECRET_KEY || '',
-            webhookSecret: process.env.STRIPE_WEBHOOK_SECRET || ''
-        },
-        // Polar configuration
-        polar: {
-            accessToken: process.env.POLAR_ACCESS_TOKEN || '',
-            webhookSecret: process.env.POLAR_WEBHOOK_SECRET || '',
-            sandbox: process.env.POLAR_SANDBOX === 'true',
-            productPro: process.env.POLAR_PRODUCT_PRO || '',
-            productTeam: process.env.POLAR_PRODUCT_TEAM || ''
-        },
-        public: {
-            stripe: {
-                publishableKey: process.env.NUXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || ''
-            },
-            payments: {
-                provider: process.env.NUXT_PUBLIC_PAYMENTS_PROVIDER || 'polar'
-            }
+    hooks: {
+        'app:created': () => {
+            console.warn([
+                '',
+                '⚠️  @vantol/payments is a PREMIUM layer.',
+                '',
+                '   This stub does not include the actual layer code.',
+                '   To use this layer, you need a valid license.',
+                '',
+                '   1. Purchase at: https://nuxtlayers.dev/pricing',
+                '   2. Install with: npx nuxt-layers add @vantol/payments --license YOUR_KEY',
+                ''
+            ].join('\n'))
         }
     }
 })

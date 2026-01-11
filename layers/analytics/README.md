@@ -1,21 +1,21 @@
-# @vantol/payments
+# @vantol/analytics
 
-Stripe and Polar integration with checkout, subscriptions, and customer portal.
+Real-time analytics dashboard with page views, events, and user flow tracking.
 
 ## 🔐 Premium Layer
 
 This is a premium layer that requires a valid license to use.
 
-**Price:** $39/mo
+**Price:** $29/mo
 
 ## Features
 
-- Stripe integration
-- Polar.sh integration
-- Checkout flow
-- Subscription management
-- Customer portal
-- License validation
+- Privacy-focused (no cookies)
+- Real-time page view tracking
+- Custom event tracking
+- Beautiful dashboard with charts
+- Traffic sources breakdown
+- Export to CSV/JSON
 
 ## Installation
 
@@ -23,19 +23,19 @@ This is a premium layer that requires a valid license to use.
 
 2. **Install with your license key:**
    ```bash
-   npx nuxt-layers add @vantol/payments --license YOUR_LICENSE_KEY
+   npx nuxt-layers add @vantol/analytics --license YOUR_LICENSE_KEY
    ```
 
 3. **Configure in your nuxt.config.ts:**
    ```ts
    export default defineNuxtConfig({
-     extends: ['@vantol/payments']
+     extends: ['@vantol/analytics']
    })
    ```
 
 ## Documentation
 
-Full documentation available at [nuxtlayers.dev/docs/payments](https://nuxtlayers.dev/docs/payments)
+Full documentation available at [nuxtlayers.dev/docs/analytics](https://nuxtlayers.dev/docs/analytics)
 
 ## Support
 

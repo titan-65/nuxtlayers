@@ -1,23 +1,23 @@
 {
-    "id": "@vantol/analytics",
-    "name": "Analytics",
-    "version": "1.0.0",
-    "description": "Real-time analytics dashboard with page views, events, and user flow tracking",
-    "category": "Analytics",
-    "author": "Vantol",
-    "license": "premium",
-    "premium": true,
-    "price": "$29/mo",
-    "features": [
-        "Real-time page view tracking",
-        "Event tracking with custom properties",
-        "User flow visualization",
-        "Export to CSV/JSON",
-        "Privacy-focused (no cookies)",
-        "Beautiful dashboard charts"
-    ],
-    "dependencies": [],
-    "npmDependencies": {},
-    "github": "github:titan-65/nuxtlayers/layers/analytics",
-    "docs": "https://nuxtlayers.dev/docs/analytics"
+  "id": "@vantol/analytics",
+  "name": "@vantol/analytics",
+  "version": "1.0.0",
+  "description": "Real-time analytics dashboard with page views, events, and user flow tracking.",
+  "category": "Premium",
+  "author": "Vantol",
+  "license": "premium",
+  "premium": true,
+  "price": "$29/mo",
+  "features": [
+    "Privacy-focused (no cookies)",
+    "Real-time page view tracking",
+    "Custom event tracking",
+    "Beautiful dashboard with charts",
+    "Traffic sources breakdown",
+    "Export to CSV/JSON"
+  ],
+  "dependencies": [],
+  "github": "github:titan-65/nuxtlayers/layers/analytics",
+  "docs": "https://nuxtlayers.dev/docs/analytics",
+  "installCommand": "npx nuxt-layers add @vantol/analytics"
 }

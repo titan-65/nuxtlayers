@@ -1,20 +1,23 @@
 {
-    "name": "@vantol/payments",
-    "version": "1.0.0",
-    "description": "Stripe payments layer with checkout, subscriptions, customer portal, and webhooks.",
-    "tags": [
-        "payments",
-        "stripe",
-        "subscriptions",
-        "checkout"
-    ],
-    "dependencies": [
-        "stripe"
-    ],
-    "repository": "https://github.com/vantol/nuxtlayers-payments",
-    "demo": "https://payments-demo.nuxtlayers.dev",
-    "author": {
-        "name": "Vantol Bennett",
-        "email": "hello@vantolbennett.com"
-    }
+  "id": "@vantol/payments",
+  "name": "@vantol/payments",
+  "version": "1.0.0",
+  "description": "Stripe and Polar integration with checkout, subscriptions, and customer portal.",
+  "category": "Premium",
+  "author": "Vantol",
+  "license": "premium",
+  "premium": true,
+  "price": "$39/mo",
+  "features": [
+    "Stripe integration",
+    "Polar.sh integration",
+    "Checkout flow",
+    "Subscription management",
+    "Customer portal",
+    "License validation"
+  ],
+  "dependencies": [],
+  "github": "github:titan-65/nuxtlayers/layers/payments",
+  "docs": "https://nuxtlayers.dev/docs/payments",
+  "installCommand": "npx nuxt-layers add @vantol/payments"
 }
