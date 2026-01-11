@@ -6,6 +6,7 @@ const { user, loading, isAdmin, init } = useFirebaseAuth()
 
 // Dashboard data
 const publishedLayers = ref<any[]>([])
+const licenses = ref<any[]>([])
 const stats = ref({ totalLayers: 0, totalDownloads: 0, thisMonth: 0, platformLayerCount: 0 })
 const dataLoading = ref(true)
 
@@ -15,18 +16,40 @@ async function fetchDashboardData() {
   
   try {
     dataLoading.value = true
-    const response = await $fetch('/api/dashboard/stats', {
-      query: { userId: user.value.email }
-    })
     
-    if (response.success) {
-      publishedLayers.value = response.data.layers
-      stats.value = response.data.stats
+    // Fetch stats and layers
+    const [statsResponse, licensesResponse] = await Promise.all([
+      $fetch('/api/dashboard/stats', {
+        query: { userId: user.value.email }
+      }),
+      $fetch('/api/license', {
+        query: { email: user.value.email },
+        headers: { authorization: `Bearer ${user.value.uid}` }
+      }).catch(() => ({ success: false, licenses: [] }))
+    ])
+    
+    if (statsResponse.success) {
+      publishedLayers.value = statsResponse.data.layers
+      stats.value = statsResponse.data.stats
+    }
+    
+    if (licensesResponse.success) {
+      licenses.value = licensesResponse.licenses || []
     }
   } catch (error) {
     console.error('Failed to fetch dashboard data:', error)
   } finally {
     dataLoading.value = false
+  }
+}
+
+// Copy license key to clipboard
+const copyLicenseKey = async (key: string) => {
+  try {
+    await navigator.clipboard.writeText(key)
+    // Could add a toast notification here
+  } catch (err) {
+    console.error('Failed to copy:', err)
   }
 }
 
@@ -114,6 +137,55 @@ watch(user, async (newUser) => {
             <div class="flex items-center gap-2">
               <NuxtLink :to="`/layers/${encodeURIComponent(layer.id)}`" class="dark-btn-outline text-[10px] px-3 py-1">View</NuxtLink>
               <button class="dark-btn-outline text-[10px] px-3 py-1">Update</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Licenses Section -->
+      <div class="mb-8">
+        <div class="flex items-center justify-between mb-4">
+          <h2 class="text-sm font-bold uppercase tracking-wide text-orange-500">Your Licenses</h2>
+          <NuxtLink to="/pricing" class="dark-btn-outline text-xs">Upgrade</NuxtLink>
+        </div>
+
+        <!-- No licenses -->
+        <div v-if="licenses.length === 0" class="dark-card p-8 text-center">
+          <p class="text-gray-500 mb-4">No active licenses. Upgrade to access premium layers.</p>
+          <NuxtLink to="/pricing" class="dark-btn text-xs">View Plans</NuxtLink>
+        </div>
+
+        <!-- Licenses list -->
+        <div v-else class="dark-card divide-y divide-white/10">
+          <div v-for="license in licenses" :key="license.id" class="p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div class="flex items-center gap-3">
+                <span class="text-xs font-bold uppercase px-2 py-1 rounded"
+                      :class="license.plan === 'pro' ? 'bg-orange-500/20 text-orange-500' : 'bg-purple-500/20 text-purple-500'">
+                  {{ license.plan }}
+                </span>
+                <span class="text-[10px] font-mono uppercase"
+                      :class="license.status === 'active' ? 'text-green-500' : 'text-red-500'">
+                  {{ license.status }}
+                </span>
+              </div>
+              <div class="text-[10px] font-mono text-gray-600">
+                Expires: {{ new Date(license.expiresAt).toLocaleDateString() }}
+              </div>
+            </div>
+            
+            <div class="flex items-center gap-2 bg-black/30 rounded px-3 py-2">
+              <code class="text-xs font-mono text-gray-400 flex-1">{{ license.key }}</code>
+              <button 
+                @click="copyLicenseKey(license.key)"
+                class="text-[10px] text-orange-500 hover:text-orange-400"
+              >
+                Copy
+              </button>
+            </div>
+            
+            <div class="mt-2 text-[10px] text-gray-600">
+              Add to .env: <code class="text-gray-500">NUXTLAYERS_LICENSE={{ license.key }}</code>
             </div>
           </div>
         </div>

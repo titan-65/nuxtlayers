@@ -111,6 +111,34 @@ export default defineEventHandler(async (event) => {
                 createdAt: new Date().toISOString(),
                 updatedAt: new Date().toISOString(),
                 author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }
+            },
+            {
+                id: '@vantol/saas-kit',
+                name: '@vantol/saas-kit',
+                version: '1.0.0',
+                description: 'Complete SaaS starter with teams, subscriptions, onboarding, billing, and modern UI.',
+                dependencies: ['@vantol/payments', '@vantol/auth-firebase'],
+                official: true,
+                premium: true,
+                tags: ['saas', 'teams', 'billing', 'onboarding', 'dashboard'],
+                downloads: 420,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }
+            },
+            {
+                id: '@vantol/analytics',
+                name: '@vantol/analytics',
+                version: '1.0.0',
+                description: 'Real-time analytics dashboard with page views, events, and user flow tracking.',
+                dependencies: [],
+                official: true,
+                premium: true,
+                tags: ['analytics', 'dashboard', 'charts', 'tracking'],
+                downloads: 380,
+                createdAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+                author: { name: 'NuxtLayers Team', email: 'team@nuxtlayers.dev' }
             }
         ]
 

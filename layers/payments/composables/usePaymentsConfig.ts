@@ -28,7 +28,7 @@
  * }
  * ```
  */
-export type PaymentProvider = 'stripe' | 'paddle' | 'lemonsqueezy'
+export type PaymentProvider = 'stripe' | 'polar' | 'paddle' | 'lemonsqueezy'
 
 export const usePaymentsConfig = () => {
     const config = useRuntimeConfig()
