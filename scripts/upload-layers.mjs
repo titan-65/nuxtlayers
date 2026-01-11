@@ -7,7 +7,7 @@
  *   node scripts/upload-layers.js
  * 
  * Requires:
- *   - FIREBASE_SERVICE_ACCOUNT env var or GOOGLE_APPLICATION_CREDENTIALS
+ *   - FIREBASE_SERVICE_ACCOUNT env var (loaded from apps/web/.env)
  *   - Firebase Storage bucket configured
  */
 
@@ -18,13 +18,22 @@ import * as tar from 'tar'
 import fs from 'fs-extra'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { config } from 'dotenv'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// Configuration - Use default bucket format: {projectId}.appspot.com
-const STORAGE_BUCKET = 'layers-854b4.appspot.com'
-const LAYERS_DIR = path.join(__dirname, '..', 'layers')
+// Load environment from apps/web/.env
+const envPath = path.join(__dirname, '..', 'apps', 'web', '.env')
+if (fs.existsSync(envPath)) {
+    config({ path: envPath })
+    console.log(`✓ Loaded environment from ${envPath}`)
+}
+
+// Configuration
+const STORAGE_BUCKET = process.env.NUXT_PUBLIC_FIREBASE_STORAGE_BUCKET || 'layers-854b4.firebasestorage.app'
+const LAYERS_DIR = path.join(__dirname, '..', 'layers') // Free layers
+const LAYERS_PRIVATE_DIR = path.join(__dirname, '..', 'layers-private') // Premium layers
 const TEMP_DIR = path.join(__dirname, '..', '.tmp-tarballs')
 
 // Layer definitions with premium status
@@ -62,12 +71,14 @@ async function initFirebase() {
     }
 }
 
-async function packageLayer(layerId) {
-    const layerPath = path.join(LAYERS_DIR, layerId)
+async function packageLayer(layerId, isPremium) {
+    // Premium layers are in layers-private/, free layers are in layers/
+    const baseDir = isPremium ? LAYERS_PRIVATE_DIR : LAYERS_DIR
+    const layerPath = path.join(baseDir, layerId)
     const layerJsonPath = path.join(layerPath, 'layer.json')
 
     if (!await fs.pathExists(layerPath)) {
-        console.log(`  ⚠ Layer directory not found: ${layerId}`)
+        console.log(`  ⚠ Layer directory not found: ${layerPath}`)
         return null
     }
 
@@ -89,7 +100,7 @@ async function packageLayer(layerId) {
         {
             gzip: true,
             file: tarballPath,
-            cwd: LAYERS_DIR
+            cwd: baseDir
         },
         [layerId]
     )
@@ -134,17 +145,23 @@ async function uploadLayer(bucket, db, layerInfo, isPremium) {
         console.log(`  ✓ Uploaded (public): ${url}`)
     }
 
-    // Update Firestore with tarball URL
+    // Update Firestore with tarball URL (use set+merge to create if doesn't exist)
     const docId = `vantol-${layerId}`
     const layerRef = db.collection('layers').doc(docId)
     const versionRef = layerRef.collection('versions').doc(version)
 
-    // Mark layer as premium in Firestore
-    await layerRef.update({ premium: isPremium })
+    // Mark layer as premium in Firestore (create doc if needed)
+    await layerRef.set({
+        premium: isPremium,
+        id: `@vantol/${layerId}`,
+        updatedAt: new Date().toISOString()
+    }, { merge: true })
 
-    await versionRef.update({
-        tarballUrl: url
-    })
+    await versionRef.set({
+        tarballUrl: url,
+        version,
+        createdAt: new Date().toISOString()
+    }, { merge: true })
     console.log(`  ✓ Updated Firestore: ${docId}/versions/${version}`)
 
     return url
@@ -167,7 +184,7 @@ async function main() {
             const { id: layerId, premium } = layer
             console.log(`\n[${layerId}] ${premium ? '🔐 PREMIUM' : '🆓 FREE'}`)
 
-            const layerInfo = await packageLayer(layerId)
+            const layerInfo = await packageLayer(layerId, premium)
             if (!layerInfo) continue
 
             const url = await uploadLayer(storage, db, layerInfo, premium)
