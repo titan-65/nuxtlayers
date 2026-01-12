@@ -197,3 +197,22 @@ export async function extractLayer(tarballPath: string, destPath: string): Promi
 export function getRegistryUrl(): string {
     return REGISTRY_URL
 }
+
+/**
+ * Track a layer download for analytics.
+ */
+export async function trackDownload(layerName: string): Promise<void> {
+    try {
+        const url = `${REGISTRY_URL}/api/layers/${encodeURIComponent(layerName)}/track`
+        await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).catch(() => {
+            // Silently fail - tracking is not critical
+        })
+    } catch {
+        // Silently fail - tracking is not critical
+    }
+}
